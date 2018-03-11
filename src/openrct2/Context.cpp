@@ -174,6 +174,11 @@ namespace OpenRCT2
             return gExitCode;
         }
 
+        void WriteLine(const std::string &s) override
+        {
+            _stdInOutConsole.WriteLine(s);
+        }
+
         /**
          * Causes the OpenRCT2 game loop to finish.
          */
@@ -792,8 +797,8 @@ namespace OpenRCT2
 
             twitch_update();
             chat_update();
-            console_update();
             _stdInOutConsole.ProcessEvalQueue();
+            _uiContext->Update();
         }
 
         /**
