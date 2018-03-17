@@ -68,10 +68,12 @@
 #include "network/network.h"
 #include "network/twitch.h"
 #include "platform/platform.h"
+#include "scripting/ScriptEngine.h"
 #include "util/Util.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -93,6 +95,7 @@ namespace OpenRCT2
         DiscordService *            _discordService = nullptr;
 #endif
         StdInOutConsole             _stdInOutConsole;
+        ScriptEngine                _scriptEngine;
 
         // Game states
         TitleScreen * _titleScreen = nullptr;
@@ -117,7 +120,8 @@ namespace OpenRCT2
         Context(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
             : _env(env),
               _audioContext(audioContext),
-              _uiContext(uiContext)
+              _uiContext(uiContext),
+              _scriptEngine(_stdInOutConsole, *env)
         {
             Instance = this;
         }
@@ -153,6 +157,11 @@ namespace OpenRCT2
         IAudioContext * GetAudioContext() override
         {
             return _audioContext;
+        }
+
+        Scripting::ScriptEngine& GetScriptEngine() override
+        {
+            return _scriptEngine;
         }
 
         IUiContext * GetUiContext() override
@@ -801,7 +810,7 @@ namespace OpenRCT2
 
             twitch_update();
             chat_update();
-            _stdInOutConsole.ProcessEvalQueue();
+            _scriptEngine.Update();
             _uiContext->Update();
         }
 

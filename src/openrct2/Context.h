@@ -71,6 +71,11 @@ namespace OpenRCT2
         interface IAudioContext;
     }
 
+    namespace Scripting
+    {
+        class ScriptEngine;
+    }
+
     namespace Ui
     {
         interface IUiContext;
@@ -85,6 +90,7 @@ namespace OpenRCT2
 
         virtual Audio::IAudioContext *  GetAudioContext() abstract;
         virtual Ui::IUiContext *        GetUiContext() abstract;
+        virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
         virtual IPlatformEnvironment *  GetPlatformEnvironment() abstract;
 
         virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
